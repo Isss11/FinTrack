@@ -14,7 +14,7 @@ class ExpensesForm extends React.Component {
         // https://reactjs.org/docs/forms.html
         this.handleNameChange = this.handleNameChange.bind(this);
         this.handleAmountChange = this.handleAmountChange.bind(this);
-        this.handleSumbit = this.handleSubmit.bind(this);
+        
     }
 
     handleNameChange(event) {
@@ -25,15 +25,12 @@ class ExpensesForm extends React.Component {
         this.setState({expenseAmount: event.target.value}); // parses out numeric value
     }
 
-    handleSubmit(event) {
-        event.preventDefault(); // prevents form from reloadin
-        alert("Name: " + this.state.expenseName + " Amount: " + this.state.expenseAmount);
-    }
+    
 
     render () {
         return (
             <div> 
-                <form onSubmit={this.handleSubmit}>
+                <form onSubmit={() => this.props.onSubmit}> {/*Calls up to the handler in the app function*/}
                     <label>
                         Expenses Name
                         {/*This changes the state of the instance as we change the input */}

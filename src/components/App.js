@@ -1,8 +1,9 @@
 import '../index.css';
 import React from 'react';
-import Expenses from "./Expenses.js";
+import Expenses from "./AllExpenses.js";
 import ExpensesForm from "./ExpensesForm.js";
 import TotalExpenses from "./TotalExpenses.js";
+import Expense from './Expense';
 
 // creates app page -- to include in another file later
 class App extends React.Component {
@@ -10,7 +11,30 @@ class App extends React.Component {
         super(props);
         this.state = {
             expensesAmount: 0, // always starts at zero
-            expenses: [] // list of all expenses, with object of name and value
+            expenseDataList: [] // holds array containing objects of expense data
+        }
+
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.renderExpense = this.renderExpense.bind(this);
+        this.renderAllExpenses = this.renderAllExpenses.bind(this);
+    }
+
+    handleSubmit(event) {
+        event.preventDefault(); // prevents form from reloadin
+        alert("Name: " + this.state.expenseName + " Amount: " + this.state.expenseAmount);
+    }
+
+    // renders one individual expense
+    renderExpense(givenData) {
+        return (
+            <Expense expenseName={givenData.expenseName} expenseAmount={givenData.expenseAmount}/>
+        )
+    }
+
+    // renders all expenses, iterating through array
+    renderAllExpenses() {
+        for (let expenseData in expenseDataList) {
+            this.renderExpense(expenseData);
         }
     }
 
@@ -19,7 +43,7 @@ class App extends React.Component {
         return  (
             <div>
                 <header>Expense Tracker</header>
-                <ExpensesForm/>
+                <ExpensesForm onSubmit={this.handleSubmit}/>
                 <Expenses/>
                 <TotalExpenses allExpenses={this.state.expensesAmount}/>
 

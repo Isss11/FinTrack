@@ -6,7 +6,9 @@ class TotalExpenses extends React.Component {
     render () {
         return (
             <div>
-                This is where the total expenses should be listed.
+                <div>
+                    Total Expenses: $ {this.props.allExpenses}
+                </div>
             </div>
         )
     };

@@ -17,32 +17,32 @@ class ExpensesForm extends React.Component {
         
     }
 
-    handleNameChange(event) {
-        this.setState({expenseName: event.target.value}); // note that I'm importing from event.target.value (value is a keyword, not a variable name)
+   handleNameChange(e) {
+        this.props.onNameChange(e.target.value);
     }
 
-    handleAmountChange(event) {
-        this.setState({expenseAmount: event.target.value}); // parses out numeric value
-    }
+    handleAmountChange(e) { // state has been lifted up
+        this.props.onAmountChange(e.target.value);
+    } 
 
     
 
-    render () {
+    render () { // note the constant references held here
         return (
             <div> 
-                <form onSubmit={() => this.props.onSubmit}> {/*Calls up to the handler in the app function*/}
+                <form> {/*Calls up to the handler in the app function*/}
                     <label>
                         Expenses Name
                         {/*This changes the state of the instance as we change the input */}
-                        <input type="text" value ={this.state.expenseName} onChange={this.handleNameChange}></input>
+                        <input type="text" value ={this.state.nameInput} onChange={this.handleNameChange}></input>
                     </label>    
 
                     <label>
                         Amount
                         {/* This takes in an amount as an input*/}
-                        <input type="text" value = {this.state.expenseAmount} onChange={this.handleAmountChange}></input>
+                        <input type="text" value = {this.props.amountInput} onChange={this.handleAmountChange}></input>
                     </label>
-                    <input type="submit" value="Add" />          
+                    <input type="button" onClick={this.props.onClick} value="Add" />          
                 </form>
             </div>
         )

@@ -25,8 +25,6 @@ class ExpensesForm extends React.Component {
         this.props.onAmountChange(e.target.value);
     } 
 
-    
-
     render () { // note the constant references held here
         return (
             <div> 

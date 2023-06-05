@@ -1,4 +1,4 @@
-// this class will hold all the relevant data for a single expense that was input
+// this class will hold all the relevant data for a single expense that was input (not a React component)
 
 class ExpenseData {
     constructor(name, amount) {

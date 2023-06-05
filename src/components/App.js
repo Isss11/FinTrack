@@ -19,7 +19,18 @@ class App extends React.Component {
         this.addExpense = this.addExpense.bind(this);
         this.changeAmountChange = this.changeAmountChange.bind(this);
         this.changeNameChange = this.changeNameChange.bind(this);
-        //this.renderAllExpenses = this.renderAllExpenses.bind(this);
+        this.calculateTotalExpenses = this.calculateTotalExpenses.bind(this);
+        this.addExpenseToTotal = this.addExpenseToTotal.bind(this);
+    }
+
+    calculateTotalExpenses() {
+        this.setState({allExpensesAmount: 0});
+
+        this.state.expenseDataList.forEach(this.addExpenseToTotal)
+    }
+
+    addExpenseToTotal(expense) {
+        this.setState({allExpensesAmount: this.state.allExpensesAmount + Number(expense.amount)})
     }
 
     // adds a new expense and appends it to the list
@@ -27,6 +38,8 @@ class App extends React.Component {
         let newExpense = new ExpenseData(this.state.nameInput, this.state.amountInput);
 
         this.state.expenseDataList.push(newExpense)
+        this.calculateTotalExpenses();
+
         this.forceUpdate() // re-renders entire page with updated expenses
     }
 

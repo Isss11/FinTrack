@@ -7,6 +7,7 @@ class Expense extends React.Component {
         return (
             <div>
                 <div>{this.props.expenseName} {this.props.expenseAmount}</div>
+                <input type='button' value="Delete"></input>
             </div>
         )
     }

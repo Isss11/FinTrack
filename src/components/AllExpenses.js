@@ -4,6 +4,7 @@ import Expense from './Expense';
 
 // creating div to hold all expenses elements
 class AllExpenses extends React.Component {
+
     render () {
         return ( // only adding element name at the moment
             <div>

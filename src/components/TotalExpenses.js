@@ -2,19 +2,17 @@ import '../index.css';
 import React from 'react';
 
 // adding total expenses component
-class TotalExpenses extends React.Component {
-    render () {
-        return (
+function TotalExpenses(props) {
+    return (
             <div>
                 <div>
                     
                 </div>
                 <div>
-                    Total Expenses: $ {this.props.allExpenses}
+                    Total Expenses: $ {props.allExpenses}
                 </div>
             </div>
         )
-    };
 }
 
 export default TotalExpenses;

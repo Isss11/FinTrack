@@ -1,68 +1,62 @@
 import '../index.css';
-import React from 'react';
 import AllExpenses from "./AllExpenses.js";
 import ExpensesForm from "./ExpensesForm.js";
 import TotalExpenses from "./TotalExpenses.js";
 import ExpenseData from './ExpenseData.js';
+import { useState } from 'react';
 
 // creates app page -- to include in another file later
-class App extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            allExpensesAmount: 0, // always starts at zero
-            expenseDataList: [], // holds array containing objects of expense data
-            nameInput: '',
-            amountInput: 0
-        }
+function App(props) {
+    const [allExpensesAmount, setAllExpensesAmount] = useState(0);
+    const [expenseDataList, setExpenseDataList] = useState([]);
+    const [nameInput, setNameInput] = useState('');
+    const [amountInput, setAmountInput] = useState(0);
 
-        this.addExpense = this.addExpense.bind(this);
-        this.changeAmountChange = this.changeAmountChange.bind(this);
-        this.changeNameChange = this.changeNameChange.bind(this);
-        this.calculateTotalExpenses = this.calculateTotalExpenses.bind(this);
-        this.addExpenseToTotal = this.addExpenseToTotal.bind(this);
+    function calculateTotalExpenses() {
+        setAllExpensesAmount(0);
+
+        expenseDataList.forEach(addExpenseToTotal)
     }
 
-    calculateTotalExpenses() {
-        this.setState({allExpensesAmount: 0});
-
-        this.state.expenseDataList.forEach(this.addExpenseToTotal)
-    }
-
-    addExpenseToTotal(expense) {
-        this.setState({allExpensesAmount: this.state.allExpensesAmount + Number(expense.amount)})
+    function addExpenseToTotal(expense) {
+        setAllExpensesAmount(allExpensesAmount + Number(expense.amount));
     }
 
     // adds a new expense and appends it to the list
-    addExpense() {
-        let newExpense = new ExpenseData(this.state.nameInput, this.state.amountInput);
+    function addExpense() {
+        // resetting list with appended value
+        setExpenseDataList([...expenseDataList, new ExpenseData(nameInput, amountInput)])
 
-        this.state.expenseDataList.push(newExpense)
-        this.calculateTotalExpenses();
-
-        this.forceUpdate() // re-renders entire page with updated expenses
+        // https://stackoverflow.com/questions/54069253/the-usestate-set-method-is-not-reflecting-a-change-immediately
+        calculateTotalExpenses();
     }
 
-    changeNameChange(name) {
-        this.setState({nameInput: name});
+    // deletes an expense, given an index
+    function deleteExpense(e) {
+        console.log("Hello");
+        console.log(e.target)
+        // console.log(e.target.getAttribute('id'));
     }
 
-    changeAmountChange(amount) {
-        this.setState({amountInput: amount});
+    function changeNameChange(name) {
+        setNameInput(name);
+    }
+
+    function changeAmountChange(amount) {
+        setAmountInput(amount);
     }
 
     // renders application
-    render() {
-        return  (
+    return  (
+
             <div>
                 <header>Expense Tracker</header>
-                <ExpensesForm onClick={() => this.addExpense()} onNameChange={this.changeNameChange} 
-                onAmountChange={this.changeAmountChange} nameInput={this.state.nameInput} amountInput={this.state.amountInput}/>
-                <AllExpenses expenses={this.state.expenseDataList}/>
-                <TotalExpenses allExpenses={this.state.allExpensesAmount}/>
+                <ExpensesForm onClick={() => addExpense()} onNameChange={changeNameChange} 
+                onAmountChange={changeAmountChange} nameInput={nameInput} amountInput={amountInput}/>
+                <AllExpenses expenses={expenseDataList} onDelete={(e) => deleteExpense(e)}/>
+                <TotalExpenses allExpenses={allExpensesAmount}/>
             </div>
         )
-    };
 }
 
 export default App;

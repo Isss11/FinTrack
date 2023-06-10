@@ -7,7 +7,6 @@ function AllExpenses(props) {
     return ( // only adding element name at the moment, id stores the id of the element to delete it (by the key)
             <div>
                 {props.expenses.map(function(expense, i) {
-                    console.log("Expenses what" + expense.name, expense.amount)
                 return <Expense expenseName={expense.name} expenseAmount={expense.amount} key={i} id={i}
                     onDelete={(e) => props.onDelete(e)}
                 />

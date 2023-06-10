@@ -6,7 +6,8 @@ function ExpensesForm(props) {
         props.onNameChange(e.target.value);
     }
 
-    function handleAmountChange(e) { // state has been lifted up
+    function handleAmountChange(e) { 
+        // state has been lifted up
         props.onAmountChange(e.target.value);
     } 
 
@@ -20,9 +21,9 @@ function ExpensesForm(props) {
                     </label>    
 
                     <label>
-                        Amount
+                        Amount $
                         {/* This takes in an amount as an input*/}
-                        <input type="text" value = {props.amountInput} onChange={handleAmountChange}></input>
+                        <input type="number" min="0" value = {props.amountInput} onChange={handleAmountChange}></input>
                     </label>
                     <input type="button" onClick={props.onClick} value="Add" />          
                 </form>

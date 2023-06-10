@@ -3,7 +3,7 @@ import AllExpenses from "./AllExpenses.js";
 import ExpensesForm from "./ExpensesForm.js";
 import TotalExpenses from "./TotalExpenses.js";
 import ExpenseData from './ExpenseData.js';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 // creates app page -- to include in another file later
 function App(props) {
@@ -12,30 +12,33 @@ function App(props) {
     const [nameInput, setNameInput] = useState('');
     const [amountInput, setAmountInput] = useState(0);
 
+    useEffect(calculateTotalExpenses, [expenseDataList]);
+
     function calculateTotalExpenses() {
-        setAllExpensesAmount(0);
+        // https://stackoverflow.com/questions/54119678/is-usestate-synchronous
+        let calculatedAmount = 0;
 
-        expenseDataList.forEach(addExpenseToTotal)
-    }
+        expenseDataList.forEach(expense => {calculatedAmount += Number(expense.amount)});
 
-    function addExpenseToTotal(expense) {
-        setAllExpensesAmount(allExpensesAmount + Number(expense.amount));
+        setAllExpensesAmount(calculatedAmount);
     }
 
     // adds a new expense and appends it to the list
     function addExpense() {
         // resetting list with appended value
-        setExpenseDataList([...expenseDataList, new ExpenseData(nameInput, amountInput)])
-
-        // https://stackoverflow.com/questions/54069253/the-usestate-set-method-is-not-reflecting-a-change-immediately
-        calculateTotalExpenses();
+        setExpenseDataList([...expenseDataList, new ExpenseData(nameInput, amountInput)]);
     }
 
     // deletes an expense, given an index
     function deleteExpense(e) {
-        console.log("Hello");
-        console.log(e.target)
-        // console.log(e.target.getAttribute('id'));
+        let removeID = e.target.id;
+
+        // copying individual elements to create a different memory reference (or else React will think element is the same)
+        let newExpenseDataList = []
+        expenseDataList.forEach(expense => {newExpenseDataList.push(new ExpenseData(expense.name, expense.amount))});
+        newExpenseDataList.splice(removeID, 1);
+
+        setExpenseDataList(newExpenseDataList);
     }
 
     function changeNameChange(name) {
@@ -43,12 +46,15 @@ function App(props) {
     }
 
     function changeAmountChange(amount) {
-        setAmountInput(amount);
+        try {
+            setAmountInput(Number(amount));
+        } catch (error) {
+            alert("You inputted a non-numeric value.");
+        }
     }
 
     // renders application
     return  (
-
             <div>
                 <header>Expense Tracker</header>
                 <ExpensesForm onClick={() => addExpense()} onNameChange={changeNameChange} 

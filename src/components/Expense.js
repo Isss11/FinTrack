@@ -4,8 +4,8 @@ import React from 'react';
 /*Holds the details for a single expense*/
 function Expense(props) {
     return (<div>
-                <div>{props.expenseName} {props.expenseAmount}</div>
-                <input type='button' value="Delete" onClick={(e) => props.onDelete(e)}/>
+                <div>{props.expenseName} ${props.expenseAmount}</div>
+                <input id={props.id} type='button' value="Delete" onClick={(e) => props.onDelete(e)}/>
             </div>
         )
 }

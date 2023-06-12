@@ -13,10 +13,11 @@ function App(props) {
     const [amountInput, setAmountInput] = useState(0);
     const [dateInput, setDateInput] = useState('');
     const [categoryInput, setCategoryInput] = useState('');
-    const [categoriesList, setCategoriesList] = useState([]);
+    const [categoriesMap, setCategoriesMap] = useState([]);
 
     useEffect(changeDate, [dateInput]);
     useEffect(calculateTotalExpenses, [expenseDataList]);
+    useEffect(checkThroughCategories, [expenseDataList]);
 
     // every time expenseDataList is changed, total expenses are re-calculated
     function calculateTotalExpenses() {
@@ -27,6 +28,28 @@ function App(props) {
         setAllExpensesAmount(calculatedAmount);
 
         console.log(expenseDataList);
+    }
+
+    // creates a hashmap for all the categories, and creates a list to be used to created the datalist
+    function checkThroughCategories() {
+        const newCategoriesMap = new Map();
+
+        // iterate through each element, mapping indices to categories
+        for (let i = 0; i < expenseDataList.length; ++i) {
+            let currentExpenseCategory = expenseDataList[i].category;
+
+            if (newCategoriesMap.has(currentExpenseCategory)) {
+                let mappedList = newCategoriesMap.get(currentExpenseCategory);
+                mappedList.push(i);
+
+                newCategoriesMap.set(currentExpenseCategory, mappedList);
+            } else {
+                newCategoriesMap.set(currentExpenseCategory, [i]);
+            }
+        }
+
+        setCategoriesMap(newCategoriesMap);
+        console.log(Array.from(newCategoriesMap.keys()));
     }
 
     // adds a new expense and appends it to the list
@@ -72,7 +95,9 @@ function App(props) {
                 <header>Expense Tracker</header>
                 <ExpensesForm onClick={() => addExpense()} onNameChange={changeNameChange} 
                 onAmountChange={changeAmountChange} onDateChange={changeDate} onCategoryChange={changeCategoryInput} 
-                nameInput={nameInput} amountInput={amountInput} dateInput={dateInput} categoryInput={categoryInput}/>
+                nameInput={nameInput} amountInput={amountInput} dateInput={dateInput} categoryInput={categoryInput}
+                    currentCategories={Array.from(categoriesMap.keys())}
+                />
                 <AllExpenses expenses={expenseDataList} onDelete={(e) => deleteExpense(e)}/>
                 <TotalExpenses allExpenses={allExpensesAmount}/>
             </div>

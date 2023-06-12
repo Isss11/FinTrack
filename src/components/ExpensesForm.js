@@ -34,17 +34,22 @@ function ExpensesForm(props) {
                         <input type="number" min="0" step="0.01" value = {props.amountInput} onChange={handleAmountChange}></input>
                     </label>
 
-                    {/*FIXME some issue with uncontrolled to controlled components with dates (see in console log)*/}
                     <label>
                         Date
                         <input type="date" value={props.dateInput} onChange={handleDateChange}></input>
                     </label>
 
                     {/*https://stackoverflow.com/questions/14614702/html-combo-box-with-option-to-type-an-entry*/ }
-                    <input type="text" value={props.categoryInput} onChange={handleCategoryChange} name="categories" list="categoryList"></input>
-                    <datalist id="categoryList">
-                        {/*This will hold all the added categories that the user has already added*/}
-                    </datalist>
+                    <label>
+                        Category
+                        <input type="text" value={props.categoryInput} onChange={handleCategoryChange} name="categories" list="categoryList"></input>
+                        <datalist id="categoryList">
+                            {/*This will hold all the added categories that the user has already added*/}
+                            {props.currentCategories.map(function(category, i) { 
+                                return <option value={category} key={i}>{category}</option>
+                                })}
+                        </datalist>
+                    </label>
                     
                     <input type="button" onClick={props.onClick} value="Add" />          
                 </form>

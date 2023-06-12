@@ -14,6 +14,7 @@ function App(props) {
     const [dateInput, setDateInput] = useState('');
     const [categoryInput, setCategoryInput] = useState('');
     const [categoriesMap, setCategoriesMap] = useState([]);
+    const [categoriesAmountsMap, setCategoriesAmountsMap] = useState([]);
 
     useEffect(changeDate, [dateInput]);
     useEffect(calculateTotalExpenses, [expenseDataList]);
@@ -33,23 +34,29 @@ function App(props) {
     // creates a hashmap for all the categories, and creates a list to be used to created the datalist
     function checkThroughCategories() {
         const newCategoriesMap = new Map();
+        const newCategoriesAmountsMap = new Map()
 
         // iterate through each element, mapping indices to categories
         for (let i = 0; i < expenseDataList.length; ++i) {
             let currentExpenseCategory = expenseDataList[i].category;
+            let currentExpenseAmount = expenseDataList[i].amount;
 
             if (newCategoriesMap.has(currentExpenseCategory)) {
                 let mappedList = newCategoriesMap.get(currentExpenseCategory);
                 mappedList.push(i);
 
+                let newAmount = newCategoriesAmountsMap.get(currentExpenseCategory) + currentExpenseAmount;
+
                 newCategoriesMap.set(currentExpenseCategory, mappedList);
+                newCategoriesAmountsMap.set(currentExpenseCategory, newAmount);
             } else {
                 newCategoriesMap.set(currentExpenseCategory, [i]);
+                newCategoriesAmountsMap.set(currentExpenseCategory, currentExpenseAmount);
             }
         }
 
         setCategoriesMap(newCategoriesMap);
-        console.log(Array.from(newCategoriesMap.keys()));
+        setCategoriesAmountsMap(newCategoriesAmountsMap);
     }
 
     // adds a new expense and appends it to the list
@@ -96,9 +103,9 @@ function App(props) {
                 <ExpensesForm onClick={() => addExpense()} onNameChange={changeNameChange} 
                 onAmountChange={changeAmountChange} onDateChange={changeDate} onCategoryChange={changeCategoryInput} 
                 nameInput={nameInput} amountInput={amountInput} dateInput={dateInput} categoryInput={categoryInput}
-                    currentCategories={Array.from(categoriesMap.keys())}
-                />
-                <AllExpenses expenses={expenseDataList} onDelete={(e) => deleteExpense(e)}/>
+                    currentCategories={Array.from(categoriesMap.keys())}/>
+                <AllExpenses expenses={expenseDataList} onDelete={(e) => deleteExpense(e)} 
+                categoriesAmountsEntries={Array.from(categoriesAmountsMap.entries())}/>
                 <TotalExpenses allExpenses={allExpensesAmount}/>
             </div>
         )

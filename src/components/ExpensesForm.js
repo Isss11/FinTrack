@@ -25,7 +25,7 @@ function ExpensesForm(props) {
                     <label>
                         Expenses Name
                         {/*This changes the state of the instance as we change the input */}
-                        <input type="text" placeholder="Enter a name." value ={props.expenseName} onChange={handleNameChange}></input>
+                        <input type="text" placeholder="Name" value ={props.expenseName} onChange={handleNameChange}></input>
                     </label>    
 
                     <label>
@@ -42,7 +42,7 @@ function ExpensesForm(props) {
                     {/*https://stackoverflow.com/questions/14614702/html-combo-box-with-option-to-type-an-entry*/ }
                     <label>
                         Category
-                        <input type="text" value={props.categoryInput} onChange={handleCategoryChange} name="categories" list="categoryList"></input>
+                        <input type="text" placeholder='Category' value={props.categoryInput} onChange={handleCategoryChange} name="categories" list="categoryList"></input>
                         <datalist id="categoryList">
                             {/*This will hold all the added categories that the user has already added*/}
                             {props.currentCategories.map(function(category, i) { 

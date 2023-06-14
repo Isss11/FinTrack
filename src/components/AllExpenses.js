@@ -10,13 +10,9 @@ function AllExpenses(props) {
                 <div>
                     <h2>All Expenses</h2>
                     {props.expenses.map(function(expense, i) {
-                        console.log(expense.category)
-
                     return <Expense date={expense.date} expenseName={expense.name} expenseCategory={expense.category}
-                    expenseAmount={expense.amount} key={i} id={i}
-                        onDelete={(e) => props.onDelete(e)}
-                    />
-                    })}
+                        expenseAmount={expense.amount} key={i} id={i} onDelete={(e) => props.onDelete(e)}
+                        onEdit={(e) => props.onEdit(e)}/>})}
                 </div>
                 <div>
                     <h2>Expenses by Category</h2>

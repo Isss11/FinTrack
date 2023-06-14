@@ -19,7 +19,11 @@ function ExpensesForm(props) {
         props.onCategoryChange(e.target.value);
     }
 
-    return (
+
+    if (!props.isVisible) {
+        return null;
+    } else {
+        return (
             <div> 
                 <form> {/*Calls up to the handler in the app function*/}
                     <label>
@@ -54,7 +58,8 @@ function ExpensesForm(props) {
                     <input type="button" onClick={props.onClick} value="Add" />          
                 </form>
             </div>
-        )
+        );
+    }
 }
 
 export default ExpensesForm;

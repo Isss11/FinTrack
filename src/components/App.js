@@ -1,6 +1,7 @@
 import '../index.css';
 import AllExpenses from "./AllExpenses.js";
 import ExpensesForm from "./ExpensesForm.js";
+import EditExpenseForm from './EditExpenseForm';
 import TotalExpenses from "./TotalExpenses.js";
 import ExpenseData from './ExpenseData.js';
 import { useEffect, useState } from 'react';
@@ -15,6 +16,8 @@ function App(props) {
     const [categoryInput, setCategoryInput] = useState('');
     const [categoriesMap, setCategoriesMap] = useState([]);
     const [categoriesAmountsMap, setCategoriesAmountsMap] = useState([]);
+    const [editing, setEditing] = useState(false);
+    const [editedExpense, setEditedExpense] = useState(-1);
 
     useEffect(changeDate, [dateInput]);
     useEffect(calculateTotalExpenses, [expenseDataList]);
@@ -78,6 +81,44 @@ function App(props) {
         setExpenseDataList(newExpenseDataList);
     }
 
+    function editExpense() {
+        console.log("Finished editing expense.");
+
+        // taking currently edited expense and changing it to the input box values
+        let newExpenseDataList = []
+        expenseDataList.forEach(expense => {newExpenseDataList.push(new ExpenseData(expense.name, expense.amount, expense.date,
+            expense.category))});
+        
+        newExpenseDataList[editedExpense] = new ExpenseData(nameInput, amountInput, dateInput, categoryInput);
+
+        setExpenseDataList(newExpenseDataList);
+
+        setEditing(false);
+        setEditedExpense(-1);
+    }
+
+    function startEditingExpense(e) {
+        let editID = e.target.id;
+        let expenseInfo = expenseDataList[editID];
+
+        console.log("Start editing expense.");
+        
+        setEditing(true);
+        setEditedExpense(editID);
+
+        // loading up edit input boxes with existing values of object that we're editing
+        setNameInput(expenseInfo.name);
+        setAmountInput(expenseInfo.amount);
+        setDateInput(expenseInfo.date);
+        setCategoryInput(expenseInfo.category);
+    }
+
+    // FIXME might need an event parameter or a key in order to work
+    function cancelEditingExpense() {
+        console.log("Canceled expense edit.");
+        setEditing(false);
+    }
+
     function changeNameChange(name) {
         setNameInput(name);
     }
@@ -100,12 +141,20 @@ function App(props) {
     return  (
             <div>
                 <header>Expense Tracker</header>
-                <ExpensesForm onClick={() => addExpense()} onNameChange={changeNameChange} 
+
+                <ExpensesForm isVisible={editing ? false : true} onClick={() => addExpense()} onNameChange={changeNameChange} 
                 onAmountChange={changeAmountChange} onDateChange={changeDate} onCategoryChange={changeCategoryInput} 
                 nameInput={nameInput} amountInput={amountInput} dateInput={dateInput} categoryInput={categoryInput}
                     currentCategories={Array.from(categoriesMap.keys())}/>
+
+                <EditExpenseForm isVisible={editing ? true : false} onFinishedEditing={() => editExpense()} 
+                onCancel={() => cancelEditingExpense()} onNameChange={changeNameChange} onAmountChange={changeAmountChange} 
+                onDateChange={changeDate} onCategoryChange={changeCategoryInput} nameInput={nameInput} amountInput={amountInput} 
+                dateInput={dateInput} categoryInput={categoryInput} currentCategories={Array.from(categoriesMap.keys())}/>
+
                 <AllExpenses expenses={expenseDataList} onDelete={(e) => deleteExpense(e)} 
-                categoriesAmountsEntries={Array.from(categoriesAmountsMap.entries())}/>
+                categoriesAmountsEntries={Array.from(categoriesAmountsMap.entries())} onEdit={(e) => startEditingExpense(e)}/>
+
                 <TotalExpenses allExpenses={allExpensesAmount}/>
             </div>
         )

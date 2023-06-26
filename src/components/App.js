@@ -25,8 +25,6 @@ function App(props) {
         editedExpense: -1
     });
 
-    useEffect(changeDate, [tracker.dateInput]);
-    useEffect(changeEditDate, [tracker.dateEditInput]);
     useEffect(calculateTotalExpenses, [tracker.expenseDataList]);
     useEffect(checkThroughCategories, [tracker.expenseDataList]);
 
@@ -69,22 +67,18 @@ function App(props) {
 
     // resets non-editing input fields back to their default values
     function resetInputFields() {
-        setTracker(previousState => {return {...previousState, nameInput: ''}});
+        setTracker(previousState => {return {...previousState, nameInput: "pizza"}});
         setTracker(previousState => {return {...previousState, amountInput: 0}});
         setTracker(previousState => {return {...previousState, nameInput: getCurrentDate()}});
         setTracker(previousState => {return {...previousState, nameInput: ''}});
     }
 
     // gets the current date and returns in the proper format for the HTML object
-    // https://stackoverflow.com/questions/3066586/get-string-in-yyyymmdd-format-from-js-date-object
-    // https://stackoverflow.com/questions/39790102/insert-character-in-string-using-javascript
     function getCurrentDate() {
-        let dateObject = new Date()
-        let res = String(dateObject.toISOString().slice(0,10).replace(/-/g,""));
+        let currentTimeString = new Date().toLocaleString();
+        let currentDateString = currentTimeString.substring(0, 10); // parsing out just the date
 
-        res = String(res.replace(/(\d{4})(\d{2})(\d{2})/, "$1-$2-$3"));
-
-        return res;
+        return currentDateString;
     }
 
     // adds a new expense and appends it to the list
@@ -111,6 +105,7 @@ function App(props) {
 
     function editExpense() {
         // taking currently edited expense and changing it to the input box values
+        
         let newExpenseDataList = []
         tracker.expenseDataList.forEach(expense => {newExpenseDataList.push(new ExpenseData(expense.name, expense.amount, expense.date,
             expense.category))});
@@ -137,14 +132,12 @@ function App(props) {
         setTracker(previousState => {return {...previousState, categoryEditInput: expenseInfo.category}});
     }
 
-    // FIXME might need an event parameter or a key in order to work
     function cancelEditingExpense() {
         setTracker(previousState => {return {...previousState, editing: false}});
     }
 
     function changeNameChange(name) {
         setTracker(previousState => {return {...previousState, nameInput: name}});
-        setTracker(previousState => {return {...previousState, editedExpense: -1}});
     }
 
     function changeAmountChange(amount) {
@@ -191,7 +184,7 @@ function App(props) {
 
                 <EditExpenseForm isVisible={tracker.editing ? true : false} onFinishedEditing={() => editExpense()} 
                 onCancel={() => cancelEditingExpense()} onNameChange={changeNameEditChange} onAmountChange={changeAmountEditChange} 
-                onDateChange={changeEditDate} onCategoryChange={changeCategoryEditInput} nameInput={tracker.nameInput} amountInput={tracker.amountEditInput} 
+                onDateChange={changeEditDate} onCategoryChange={changeCategoryEditInput} nameInput={tracker.nameEditInput} amountInput={tracker.amountEditInput} 
                 dateInput={tracker.dateEditInput} categoryInput={tracker.categoryEditInput} currentCategories={Array.from(tracker.categoriesMap.keys())}/>
 
                 <AllExpenses expenses={tracker.expenseDataList} onDelete={(e) => deleteExpense(e)} 

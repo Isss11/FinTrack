@@ -9,7 +9,8 @@ function TotalExpenses(props) {
                     
                 </div>
                 <div>
-                    Total Expenses: $ {props.allExpenses}
+                    {/* FIXME move this to a separate function so that Expense.js and TotalExpense.js can call on it. */}
+                    Total Expenses: $ {(Math.round(parseFloat(props.allExpenses) * 100) / 100).toFixed(2)}
                 </div>
             </div>
         )

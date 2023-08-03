@@ -5,6 +5,7 @@ import EditExpenseForm from './EditExpenseForm';
 import TotalExpenses from "./TotalExpenses.js";
 import ExpenseData from './ExpenseData.js';
 import { useEffect, useState } from 'react';
+import axios from "axios" // to interface with back-end
 
 // creates app page -- to include in another file later
 function App(props) {
@@ -67,7 +68,7 @@ function App(props) {
 
     // resets non-editing input fields back to their default values
     function resetInputFields() {
-        setTracker(previousState => {return {...previousState, nameInput: "pizza"}});
+        setTracker(previousState => {return {...previousState, nameInput: ""}});
         setTracker(previousState => {return {...previousState, amountInput: 0}});
         setTracker(previousState => {return {...previousState, nameInput: getCurrentDate()}});
         setTracker(previousState => {return {...previousState, nameInput: ''}});
@@ -81,46 +82,81 @@ function App(props) {
         return currentDateString;
     }
 
+    // reloads the list based on posted information
+    function reloadList() {
+        axios.get("/api/expenses/").then((response) => (setTracker(previousState => {return {
+            ...previousState, expenseDataList: response.data
+        }})));
+    }
+
     // adds a new expense and appends it to the list
     function addExpense() {
-        // resetting list with appended value
-
-        setTracker(previousState => {return {...previousState, expenseDataList: [...tracker.expenseDataList, 
-            new ExpenseData(tracker.nameInput, tracker.amountInput, tracker.dateInput, tracker.categoryInput)]}});
         resetInputFields();
+
+        let expenseObject = {
+            name: tracker.nameInput,
+            amount: tracker.amountInput,
+            date: tracker.dateInput,
+            category: tracker.categoryInput,
+        }
+
+        // resetting list with appended value
+        axios.post("/api/expenses/", expenseObject).then(() => reloadList());
     }
 
     // deletes an expense, given an index
     function deleteExpense(e) {
         let removeID = e.target.id;
-
-        // copying individual elements to create a different memory reference (or else React will think element is the same)
-        let newExpenseDataList = []
-        tracker.expenseDataList.forEach(expense => {newExpenseDataList.push(new ExpenseData(expense.name, expense.amount, expense.date,
-            expense.category))});
-        newExpenseDataList.splice(removeID, 1);
-
-        setTracker(previousState => {return {...previousState, expenseDataList: newExpenseDataList}});
+        axios.delete(`/api/expenses/${removeID}/`).then(() => reloadList())
     }
 
+    // for finishing editing the expense
     function editExpense() {
         // taking currently edited expense and changing it to the input box values
         
-        let newExpenseDataList = []
-        tracker.expenseDataList.forEach(expense => {newExpenseDataList.push(new ExpenseData(expense.name, expense.amount, expense.date,
-            expense.category))});
-        
-        newExpenseDataList[tracker.editedExpense] = new ExpenseData(tracker.nameEditInput, tracker.amountEditInput, tracker.dateEditInput, tracker.categoryEditInput);
+        let updatedObject = {
+            name: tracker.nameEditInput,
+            amount: tracker.amountEditInput,
+            date: tracker.dateEditInput,
+            category: tracker.categoryEditInput,
+        }
 
-        setTracker(previousState => {return {...previousState, expenseDataList: newExpenseDataList}});
+        console.log({updatedObject});
+
+       axios.put(`/api/expenses/${tracker.editedExpense}/`, updatedObject).then(() => reloadList());
 
         setTracker(previousState => {return {...previousState, editing: false}});
         setTracker(previousState => {return {...previousState, editedExpense: -1}});
     }
 
+    // asynchronusly getting data
+    // https://stackoverflow.com/questions/48980380/returning-data-from-axios-api
+    // async function getExpenseData() {
+    //     const response = await axios.get("/api/expenses/")
+    //     return response.data
+    // }
+
     function startEditingExpense(e) {
         let editID = e.target.id;
-        let expenseInfo = tracker.expenseDataList[editID];
+        let accessIndex;
+        let responseData = ""; // will be changed to expenseDataList
+
+        console.log(e.target.id);
+        
+        // axios.get("/api/expenses/").then((response) => {responseData = response.data});
+
+        // finding expenseInfo value
+        // FIXME, time inefficient, should really be using a quick mapping of some sort
+        for (let i = 0; i < tracker.expenseDataList.length; ++i) {
+            if (tracker.expenseDataList[i].id = editID) {
+                accessIndex = i;
+                break;
+            }
+        }
+
+        let expenseInfo = tracker.expenseDataList[accessIndex];
+
+        console.log(expenseInfo);
         
         setTracker(previousState => {return {...previousState, editing: true}});
         setTracker(previousState => {return {...previousState, editedExpense: editID}});
@@ -192,7 +228,7 @@ function App(props) {
 
                 <TotalExpenses allExpenses={tracker.allExpensesAmount}/>
             </div>
-        )
+        );
 }
 
 export default App;

@@ -1,11 +1,12 @@
 // this class will hold all the relevant data for a single expense that was input (not a React component)
 
 class ExpenseData {
-    constructor(name, amount, date, category) {
+    constructor(name, amount, date, category, id) {
         this.name = name;
         this.amount = amount;
         this.date = date;
         this.category = category;
+        this.id = id;
     }
 
     get _name() {
@@ -38,6 +39,14 @@ class ExpenseData {
 
     set _category(_category) {
         this.category = _category;
+    }
+
+    get _id() {
+        return this.id;
+    }
+
+    set _id(_id) {
+        this.id = _id;
     }
 }
 

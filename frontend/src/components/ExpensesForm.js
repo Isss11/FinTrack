@@ -58,7 +58,7 @@ function ExpensesForm(props) {
                     </div>
                     
                     <div className="d-grid">
-                    <input type="button" className="btn btn-light btn-outline-dark" onClick={props.onClick} value="Add" />
+                    <input type="button" className="btn btn-light btn-outline-dark rounded-pill mt-3" onClick={props.onClick} value="Add" />
                     </div>          
                 </form>
             </div>

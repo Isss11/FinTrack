@@ -1,4 +1,3 @@
-import '../index.css';
 import AllExpenses from "./AllExpenses.js";
 import ExpensesForm from "./ExpensesForm.js";
 import EditExpenseForm from './EditExpenseForm';
@@ -129,34 +128,18 @@ function App(props) {
         setTracker(previousState => {return {...previousState, editedExpense: -1}});
     }
 
-    // asynchronusly getting data
-    // https://stackoverflow.com/questions/48980380/returning-data-from-axios-api
-    // async function getExpenseData() {
-    //     const response = await axios.get("/api/expenses/")
-    //     return response.data
-    // }
-
     function startEditingExpense(e) {
         let editID = e.target.id;
         let accessIndex;
-        let responseData = ""; // will be changed to expenseDataList
-
-        console.log(e.target.id);
         
-        // axios.get("/api/expenses/").then((response) => {responseData = response.data});
-
-        // finding expenseInfo value
-        // FIXME, time inefficient, should really be using a quick mapping of some sort
         for (let i = 0; i < tracker.expenseDataList.length; ++i) {
-            if (tracker.expenseDataList[i].id = editID) {
+            if (tracker.expenseDataList[i].id === editID) {
                 accessIndex = i;
                 break;
             }
         }
 
         let expenseInfo = tracker.expenseDataList[accessIndex];
-
-        console.log(expenseInfo);
         
         setTracker(previousState => {return {...previousState, editing: true}});
         setTracker(previousState => {return {...previousState, editedExpense: editID}});
@@ -210,8 +193,8 @@ function App(props) {
 
     // renders application
     return  (
-            <div>
-                <header>Expense Tracker</header>
+            <div className="container">
+                <h1>Expense Tracker</h1>
 
                 <ExpensesForm isVisible={tracker.editing ? false : true} onClick={() => addExpense()} onNameChange={changeNameChange} 
                 onAmountChange={changeAmountChange} onDateChange={changeDate} onCategoryChange={changeCategoryInput} 

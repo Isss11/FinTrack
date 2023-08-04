@@ -1,5 +1,3 @@
-import '../index.css';
-
 // this is the form where one can add the total expenses
 function EditExpenseForm(props) {
     function handleNameChange(e) {
@@ -26,7 +24,7 @@ function EditExpenseForm(props) {
                 <div> 
                     <form> {/*Calls up to the handler in the app function*/}
                         <label>
-                            Expenses Name
+                            Expense Name
                             {/*This changes the state of the instance as we change the input */}
                             <input type="text" placeholder="Name" value ={props.expenseName} onChange={handleNameChange}></input>
                         </label>    

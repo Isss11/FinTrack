@@ -1,4 +1,3 @@
-import '../index.css';
 import React from 'react';
 
 // adding total expenses component

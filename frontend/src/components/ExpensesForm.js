@@ -1,5 +1,3 @@
-import '../index.css';
-
 // this is the form where one can add the total expenses
 function ExpensesForm(props) {
     function handleNameChange(e) {
@@ -26,36 +24,42 @@ function ExpensesForm(props) {
         return (
             <div> 
                 <form> {/*Calls up to the handler in the app function*/}
-                    <label>
-                        Expenses Name
+                    <div className="d-block">
+                        <label className="form-label">Expenses Name</label>
                         {/*This changes the state of the instance as we change the input */}
-                        <input type="text" placeholder="Name" value ={props.expenseName} onChange={handleNameChange}></input>
-                    </label>    
+                        <input className="form-control" type="text" placeholder="Name" value ={props.expenseName} onChange={handleNameChange}></input> 
+                    </div>
+                    
 
-                    <label>
-                        Amount $
+                    <div className="d-block">
+                        <label className="form-label">Amount </label>
                         {/* This takes in an amount as an input*/}
-                        <input type="number" min="0" step="0.01" value = {props.amountInput} onChange={handleAmountChange}></input>
-                    </label>
+                        <div className="input-group">
+                            <span className="input-group-text">$</span>
+                            <input className="form-control" type="number" min="0" step="0.01" value = {props.amountInput} onChange={handleAmountChange}></input>
+                        </div>
+                    </div>
 
-                    <label>
-                        Date
-                        <input type="date" value={props.dateInput} onChange={handleDateChange}></input>
-                    </label>
+                    <div className="d-block">
+                        <label className="form-label">Date</label>
+                        <input className="form-control" type="date" value={props.dateInput} onChange={handleDateChange}></input>
+                    </div>
 
                     {/*https://stackoverflow.com/questions/14614702/html-combo-box-with-option-to-type-an-entry*/ }
-                    <label>
-                        Category
-                        <input type="text" placeholder='Category' value={props.categoryInput} onChange={handleCategoryChange} name="categories" list="categoryList"></input>
+                    <div className="d-block">
+                        <label className="form-label">Category</label>
+                        <input className="form-control" type="text" placeholder='Category' value={props.categoryInput} onChange={handleCategoryChange} name="categories" list="categoryList"></input>
                         <datalist id="categoryList">
                             {/*This will hold all the added categories that the user has already added*/}
                             {props.currentCategories.map(function(category, i) { 
                                 return <option value={category} key={i}>{category}</option>
                                 })}
                         </datalist>
-                    </label>
+                    </div>
                     
-                    <input type="button" onClick={props.onClick} value="Add" />          
+                    <div className="d-grid">
+                    <input type="button" className="btn btn-light btn-outline-dark" onClick={props.onClick} value="Add" />
+                    </div>          
                 </form>
             </div>
         );

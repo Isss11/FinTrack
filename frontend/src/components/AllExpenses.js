@@ -1,4 +1,3 @@
-import '../index.css';
 import React from 'react';
 import Expense from './Expense';
 import CategoryAmount from './CategoryEntry';
@@ -16,7 +15,6 @@ function AllExpenses(props) {
                 </div>
                 <div>
                     <h2>Expenses by Category</h2>
-                    {/*Adding category entries.*/}
                     {props.categoriesAmountsEntries.map(function(categoryEntry, i) {
                         return <CategoryAmount category={categoryEntry[0]} amount={categoryEntry[1]} key={i} ></CategoryAmount>
                     })}

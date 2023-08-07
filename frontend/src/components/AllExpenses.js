@@ -9,7 +9,7 @@ function AllExpenses(props) {
                 <div>
                     <h2>All Expenses</h2>
                     {/**Will add table front-end implementation later */}
-                    <table className='table'>
+                    <table className='table table-hover table-striped'>
                         <thead>
                             <th>Name</th>
                             <th>Amount ($)</th>
@@ -30,10 +30,10 @@ function AllExpenses(props) {
                 </div>
                 <div>
                     <h2>Expenses by Category</h2>
-                    <table className='table'>
+                    <table className='table table-hover table-striped'>
                         <thead>
                             <th>Category</th>
-                            <th>Amount</th>
+                            <th>Amount ($)</th>
                         </thead>
                         <tbody>
                             {props.categoriesAmountsEntries.map(function(categoryEntry, i) {

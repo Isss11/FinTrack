@@ -8,8 +8,8 @@ function Expense(props) {
             <td>{(Math.round(parseFloat(props.expenseAmount) * 100) / 100).toFixed(2)}</td>
             <td>{props.date}</td>
             <td>{props.expenseCategory}</td>
-            <td><input id={props.id} type='button' value="Edit" onClick={(e) => props.onEdit(e)}/></td>
-            <td><input id={props.id} type='button' value="Delete" onClick={(e) => props.onDelete(e)}/></td>
+            <td><input id={props.id} type='button' className='btn btn-primary' value="Edit" onClick={(e) => props.onEdit(e)}/></td>
+            <td><input id={props.id} type='button' className='btn btn-secondary' value="Delete" onClick={(e) => props.onDelete(e)}/></td>
         </tr>
     )
 }

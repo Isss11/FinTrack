@@ -4,7 +4,9 @@ import React from 'react';
 function TotalExpenses(props) {
     return (
             <div>
-                Total Expenses: $ {(Math.round(parseFloat(props.allExpenses) * 100) / 100).toFixed(2)}
+                <h3 className='container bg-light'>
+                    <div><strong>Total Expenses:</strong> $ {(Math.round(parseFloat(props.allExpenses) * 100) / 100).toFixed(2)}</div>
+                </h3>
             </div>
         )
 }

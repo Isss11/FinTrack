@@ -25,14 +25,14 @@ function ExpensesForm(props) {
             <div> 
                 <form> {/*Calls up to the handler in the app function*/}
                     <div className="d-block">
-                        <label className="form-label">Expense Name</label>
+                        <label className="form-label"><strong>Expense Name</strong></label>
                         {/*This changes the state of the instance as we change the input */}
                         <input className="form-control" type="text" placeholder="Name" value ={props.expenseName} onChange={handleNameChange}></input> 
                     </div>
                     
 
                     <div className="d-block">
-                        <label className="form-label">Amount </label>
+                        <label className="form-label"><strong>Amount</strong></label>
                         {/* This takes in an amount as an input*/}
                         <div className="input-group">
                             <span className="input-group-text">$</span>
@@ -41,13 +41,13 @@ function ExpensesForm(props) {
                     </div>
 
                     <div className="d-block">
-                        <label className="form-label">Date</label>
+                        <label className="form-label"><strong>Date</strong></label>
                         <input className="form-control" type="date" value={props.dateInput} onChange={handleDateChange}></input>
                     </div>
 
                     {/*https://stackoverflow.com/questions/14614702/html-combo-box-with-option-to-type-an-entry*/ }
                     <div className="d-block">
-                        <label className="form-label">Category</label>
+                        <label className="form-label"><strong>Category</strong></label>
                         <input className="form-control" type="text" placeholder='Category' value={props.categoryInput} onChange={handleCategoryChange} name="categories" list="categoryList"></input>
                         <datalist id="categoryList">
                             {/*This will hold all the added categories that the user has already added*/}
@@ -58,7 +58,7 @@ function ExpensesForm(props) {
                     </div>
                     
                     <div className="d-grid">
-                    <input type="button" className="btn btn-light btn-outline-dark rounded-pill mt-3" onClick={props.onClick} value="Add" />
+                    <input type="button" className="btn btn-light btn-outline-dark rounded-pill mt-3 mb-3" onClick={props.onClick} value="Add" />
                     </div>          
                 </form>
             </div>

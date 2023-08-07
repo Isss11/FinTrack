@@ -3,7 +3,9 @@ import ExpensesForm from "./ExpensesForm.js";
 import EditExpenseForm from './EditExpenseForm';
 import TotalExpenses from "./TotalExpenses.js";
 import { useEffect, useState } from 'react';
-import axios from "axios" // to interface with back-end
+import axios from "axios"
+
+const defaultAmount = 5.00;
 
 // creates app page -- to include in another file later
 function App(props) {
@@ -12,11 +14,11 @@ function App(props) {
         expenseDataList: [],
         categoryMap: [],
         nameInput: '',
-        amountInput: '',
+        amountInput: defaultAmount,
         dateInput: getCurrentDate(),
         categoryInput: '',
         nameEditInput: '',
-        amountEditInput: '',
+        amountEditInput: defaultAmount,
         dateEditInput: getCurrentDate(),
         categoryEditInput: '',
         categoriesMap: [],
@@ -43,10 +45,10 @@ function App(props) {
 
     // resets non-editing input fields back to their default values
     function resetInputFields() {
-        setTracker(previousState => {return {...previousState, nameInput: ""}});
-        setTracker(previousState => {return {...previousState, amountInput: 0}});
-        setTracker(previousState => {return {...previousState, nameInput: getCurrentDate()}});
         setTracker(previousState => {return {...previousState, nameInput: ''}});
+        setTracker(previousState => {return {...previousState, amountInput: defaultAmount}});
+        setTracker(previousState => {return {...previousState, dateInput: getCurrentDate()}});
+        setTracker(previousState => {return {...previousState, categoryInput: ''}});
     }
 
     // gets the current date and returns in the proper format for the HTML object
@@ -90,8 +92,6 @@ function App(props) {
 
     // adds a new expense and appends it to the list
     function addExpense() {
-        resetInputFields();
-
         let expenseObject = {
             name: tracker.nameInput,
             amount: tracker.amountInput,
@@ -109,6 +109,7 @@ function App(props) {
         }
 
         // resetting list with appended value
+        resetInputFields();
         axios.post("/api/expenses/", expenseObject).then(() => reloadLists());
     }
 
@@ -140,7 +141,7 @@ function App(props) {
         let accessIndex;
         
         for (let i = 0; i < tracker.expenseDataList.length; ++i) {
-            if (tracker.expenseDataList[i].id === editID) {
+            if (Number(tracker.expenseDataList[i].id) === Number(editID)) {
                 accessIndex = i;
                 break;
             }
@@ -208,7 +209,7 @@ function App(props) {
                 nameInput={tracker.nameInput} amountInput={tracker.amountInput} dateInput={tracker.dateInput} categoryInput={tracker.categoryInput}
                     currentCategories={Array.from(tracker.categoriesMap.keys())}/>
 
-                <EditExpenseForm isVisible={tracker.editing ? true : false} onFinishedEditing={() => editExpense()} 
+                <EditExpenseForm isVisible={tracker.editing} onFinishedEditing={() => editExpense()} 
                 onCancel={() => cancelEditingExpense()} onNameChange={changeNameEditChange} onAmountChange={changeAmountEditChange} 
                 onDateChange={changeEditDate} onCategoryChange={changeCategoryEditInput} nameInput={tracker.nameEditInput} amountInput={tracker.amountEditInput} 
                 dateInput={tracker.dateEditInput} categoryInput={tracker.categoryEditInput} currentCategories={Array.from(tracker.categoriesMap.keys())}/>

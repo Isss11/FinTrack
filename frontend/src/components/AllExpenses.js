@@ -1,6 +1,6 @@
 import React from 'react';
 import Expense from './Expense';
-import CategoryAmount from './CategoryEntry';
+import CategoryEntry from './CategoryEntry';
 
 // creating div to hold all expenses elements
 function AllExpenses(props) {
@@ -30,9 +30,17 @@ function AllExpenses(props) {
                 </div>
                 <div>
                     <h2>Expenses by Category</h2>
-                    {props.categoriesAmountsEntries.map(function(categoryEntry, i) {
-                        return <CategoryAmount category={categoryEntry[0]} amount={categoryEntry[1]} key={i} ></CategoryAmount>
-                    })}
+                    <table className='table'>
+                        <thead>
+                            <th>Category</th>
+                            <th>Amount</th>
+                        </thead>
+                        <tbody>
+                            {props.categoriesAmountsEntries.map(function(categoryEntry, i) {
+                                return <CategoryEntry category={categoryEntry[0]} amount={categoryEntry[1]} key={i} ></CategoryEntry>
+                            })}
+                        </tbody>
+                    </table>
                 </div>
             </div>
         )

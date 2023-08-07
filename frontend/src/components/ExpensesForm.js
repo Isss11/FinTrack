@@ -25,7 +25,7 @@ function ExpensesForm(props) {
             <div> 
                 <form> {/*Calls up to the handler in the app function*/}
                     <div className="d-block">
-                        <label className="form-label">Expenses Name</label>
+                        <label className="form-label">Expense Name</label>
                         {/*This changes the state of the instance as we change the input */}
                         <input className="form-control" type="text" placeholder="Name" value ={props.expenseName} onChange={handleNameChange}></input> 
                     </div>

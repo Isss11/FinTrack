@@ -1,8 +1,9 @@
 function CategoryEntry(props) {
     return (
-        <div>
-            {props.category} {props.amount}
-        </div>
+        <tr>
+            <td>{props.category}</td>
+            <td>{props.amount}</td>
+        </tr>
     )
 }
 

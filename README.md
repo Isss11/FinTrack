@@ -2,11 +2,12 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-pipenv shell
-
 ## Back-end Set-up
 
 Refer to: https://www.digitalocean.com/community/tutorials/build-a-to-do-application-using-django-and-react to create a virtual environment.
+
+pipenv shell
+python manage.py runserver
 
 ## Available Scripts
 

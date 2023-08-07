@@ -2,7 +2,6 @@ import AllExpenses from "./AllExpenses.js";
 import ExpensesForm from "./ExpensesForm.js";
 import EditExpenseForm from './EditExpenseForm';
 import TotalExpenses from "./TotalExpenses.js";
-import ExpenseData from './ExpenseData.js';
 import { useEffect, useState } from 'react';
 import axios from "axios" // to interface with back-end
 
@@ -11,6 +10,7 @@ function App(props) {
     const [tracker, setTracker] = useState({
         allExpensesAmount: 0,
         expenseDataList: [],
+        categoryMap: [],
         nameInput: '',
         amountInput: 0,
         dateInput: getCurrentDate(),
@@ -26,7 +26,7 @@ function App(props) {
     });
 
     useEffect(calculateTotalExpenses, [tracker.expenseDataList]);
-    useEffect(checkThroughCategories, [tracker.expenseDataList]);
+    useEffect(calculateCategoryAmounts, [tracker.expenseDataList]);
 
     // every time expenseDataList is changed, total expenses are re-calculated
     function calculateTotalExpenses() {
@@ -35,34 +35,6 @@ function App(props) {
 
         tracker.expenseDataList.forEach(expense => {calculatedAmount += Number(expense.amount)});
         setTracker(previousState => {return {...previousState, allExpensesAmount: calculatedAmount}});
-    }
-
-    // creates a hashmap for all the categories, and creates a list to be used to created the datalist
-    function checkThroughCategories() {
-        const newCategoriesMap = new Map();
-        const newCategoriesAmountsMap = new Map()
-
-        // iterate through each element, mapping indices to categories
-        for (let i = 0; i < tracker.expenseDataList.length; ++i) {
-            let currentExpenseCategory = tracker.expenseDataList[i].category;
-            let currentExpenseAmount = tracker.expenseDataList[i].amount;
-
-            if (newCategoriesMap.has(currentExpenseCategory)) {
-                let mappedList = newCategoriesMap.get(currentExpenseCategory);
-                mappedList.push(i);
-
-                let newAmount = newCategoriesAmountsMap.get(currentExpenseCategory) + currentExpenseAmount;
-
-                newCategoriesMap.set(currentExpenseCategory, mappedList);
-                newCategoriesAmountsMap.set(currentExpenseCategory, newAmount);
-            } else {
-                newCategoriesMap.set(currentExpenseCategory, [i]);
-                newCategoriesAmountsMap.set(currentExpenseCategory, currentExpenseAmount);
-            }
-        }
-
-        setTracker(previousState => {return {...previousState, categoriesMap: newCategoriesMap}});
-        setTracker(previousState => {return {...previousState, categoriesAccountsMap: newCategoriesAmountsMap}});
     }
 
     // resets non-editing input fields back to their default values
@@ -81,11 +53,35 @@ function App(props) {
         return currentDateString;
     }
 
-    // reloads the list based on posted information
-    function reloadList() {
+    // Reloads the lists based on updated database information.
+    function reloadLists() {
         axios.get("/api/expenses/").then((response) => (setTracker(previousState => {return {
             ...previousState, expenseDataList: response.data
         }})));
+    }
+
+    // Creates HashMap for category expenses to display.
+    function calculateCategoryAmounts() {
+        let newCategoryMap = new Map();
+        let prevAmount;
+        let newAmount;
+
+        // Iterates through current expense data list, creating mappings of expenses
+        for (let i = 0; i < tracker.expenseDataList.length; ++i) {
+
+            prevAmount = Number(newCategoryMap.get(tracker.expenseDataList[i].category));
+
+            // Check to see if category hasn't been created as a mapped value in newCategoryMap.
+            if (!!prevAmount) {
+                newAmount = prevAmount + Number(tracker.expenseDataList[i].amount);
+            } else {
+                newAmount = Number(tracker.expenseDataList[i].amount);
+            }
+
+            newCategoryMap.set(tracker.expenseDataList[i].category, newAmount);
+        }
+
+        setTracker(previousState => {return {...previousState, categoryMap: newCategoryMap}});
     }
 
     // adds a new expense and appends it to the list
@@ -100,16 +96,16 @@ function App(props) {
         }
 
         // resetting list with appended value
-        axios.post("/api/expenses/", expenseObject).then(() => reloadList());
+        axios.post("/api/expenses/", expenseObject).then(() => reloadLists());
     }
 
     // deletes an expense, given an index
     function deleteExpense(e) {
         let removeID = e.target.id;
-        axios.delete(`/api/expenses/${removeID}/`).then(() => reloadList())
+        axios.delete(`/api/expenses/${removeID}/`).then(() => reloadLists())
     }
 
-    // for finishing editing the expense
+    // Called when expense has been edited.
     function editExpense() {
         // taking currently edited expense and changing it to the input box values
         
@@ -120,9 +116,7 @@ function App(props) {
             category: tracker.categoryEditInput,
         }
 
-        console.log({updatedObject});
-
-       axios.put(`/api/expenses/${tracker.editedExpense}/`, updatedObject).then(() => reloadList());
+       axios.put(`/api/expenses/${tracker.editedExpense}/`, updatedObject).then(() => reloadLists());
 
         setTracker(previousState => {return {...previousState, editing: false}});
         setTracker(previousState => {return {...previousState, editedExpense: -1}});
@@ -207,7 +201,7 @@ function App(props) {
                 dateInput={tracker.dateEditInput} categoryInput={tracker.categoryEditInput} currentCategories={Array.from(tracker.categoriesMap.keys())}/>
 
                 <AllExpenses expenses={tracker.expenseDataList} onDelete={(e) => deleteExpense(e)} 
-                categoriesAmountsEntries={Array.from(tracker.categoriesAmountsMap.entries())} onEdit={(e) => startEditingExpense(e)}/>
+                categoriesAmountsEntries={Array.from(tracker.categoryMap.entries())} onEdit={(e) => startEditingExpense(e)}/>
 
                 <TotalExpenses allExpenses={tracker.allExpensesAmount}/>
             </div>

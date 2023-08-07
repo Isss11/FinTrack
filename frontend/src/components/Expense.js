@@ -2,9 +2,6 @@ import React from 'react';
 
 /*Holds the details for a single expense*/
 function Expense(props) {
-
-
-    // FIXME, treat buttons like other table columns (make sure to reserve them)
     return (
         <tr>
             <td>{props.expenseName}</td>

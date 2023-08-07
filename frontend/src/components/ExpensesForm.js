@@ -5,7 +5,6 @@ function ExpensesForm(props) {
     }
 
     function handleAmountChange(e) { 
-        // state has been lifted up
         props.onAmountChange(e.target.value);
     } 
 

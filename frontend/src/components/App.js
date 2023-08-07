@@ -12,11 +12,11 @@ function App(props) {
         expenseDataList: [],
         categoryMap: [],
         nameInput: '',
-        amountInput: 0,
+        amountInput: '',
         dateInput: getCurrentDate(),
         categoryInput: '',
         nameEditInput: '',
-        amountEditInput: 0,
+        amountEditInput: '',
         dateEditInput: getCurrentDate(),
         categoryEditInput: '',
         categoriesMap: [],
@@ -25,8 +25,12 @@ function App(props) {
         editedExpense: -1
     });
 
+    // Loads up list of expenses on first render to trigger calculateTotalExpenses and calculateCategoryAmounts
+    useEffect(reloadLists, []);
+
     useEffect(calculateTotalExpenses, [tracker.expenseDataList]);
     useEffect(calculateCategoryAmounts, [tracker.expenseDataList]);
+
 
     // every time expenseDataList is changed, total expenses are re-calculated
     function calculateTotalExpenses() {
@@ -95,6 +99,15 @@ function App(props) {
             category: tracker.categoryInput,
         }
 
+        console.log(Object.values(expenseObject));
+
+        // input validation to check for empty fields
+        for (let key in expenseObject) {
+            if (expenseObject[key] === '') {
+                return alert("You left a field empty.");
+            }
+        }
+
         // resetting list with appended value
         axios.post("/api/expenses/", expenseObject).then(() => reloadLists());
     }
@@ -154,7 +167,7 @@ function App(props) {
     }
 
     function changeAmountChange(amount) {
-        setTracker(previousState => {return {...previousState, amountInput: Number(amount)}});
+        setTracker(previousState => {return {...previousState, amountInput: amount}});
     }
 
     function changeDate(newDate) {

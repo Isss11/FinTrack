@@ -11,13 +11,15 @@ function AllExpenses(props) {
                     {/**Will add table front-end implementation later */}
                     <table className='table table-hover table-striped'>
                         <thead>
-                            <th>Name</th>
-                            <th>Amount ($)</th>
-                            <th>Date</th>
-                            <th>Category</th>
-                            {/** Reserving space for the edit button and delete button to put under these table headers */}
-                            <th></th>
-                            <th></th>
+                            <tr>
+                                <th>Name</th>
+                                <th>Amount ($)</th>
+                                <th>Date</th>
+                                <th>Category</th>
+                                {/** Reserving space for the edit button and delete button to put under these table headers */}
+                                <th></th>
+                                <th></th>
+                            </tr>
                         </thead>
                         <tbody>
                             {/**This is a mapping function that goes through each provided expense, and then maps it to an element (will need to make it a tr element in the future*/}
@@ -32,8 +34,10 @@ function AllExpenses(props) {
                     <h2>Expenses by Category</h2>
                     <table className='table table-hover table-striped'>
                         <thead>
-                            <th>Category</th>
-                            <th>Amount ($)</th>
+                            <tr>
+                                <th>Category</th>
+                                <th>Amount ($)</th>
+                            </tr>
                         </thead>
                         <tbody>
                             {props.categoriesAmountsEntries.map(function(categoryEntry, i) {

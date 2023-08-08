@@ -1,6 +1,5 @@
 import AllExpenses from "./AllExpenses.js";
 import ExpensesForm from "./ExpensesForm.js";
-import EditExpenseForm from './EditExpenseForm';
 import TotalExpenses from "./TotalExpenses.js";
 import { useEffect, useState } from 'react';
 import axios from "axios"
@@ -204,12 +203,14 @@ function App(props) {
             <div className="container">
                 <h1>Expense Tracker</h1>
 
-                <ExpensesForm isVisible={tracker.editing ? false : true} onClick={() => addExpense()} onNameChange={changeNameChange} 
+                {/* Regular Expense Form */}
+                <ExpensesForm editingForm={false} isVisible={!tracker.editing} onClick={() => addExpense()} onNameChange={changeNameChange} 
                 onAmountChange={changeAmountChange} onDateChange={changeDate} onCategoryChange={changeCategoryInput} 
                 nameInput={tracker.nameInput} amountInput={tracker.amountInput} dateInput={tracker.dateInput} categoryInput={tracker.categoryInput}
                     currentCategories={Array.from(tracker.categoriesMap.keys())}/>
 
-                <EditExpenseForm isVisible={tracker.editing} onFinishedEditing={() => editExpense()} 
+                {/* Edit Expense Form */}
+                <ExpensesForm editingForm={true} isVisible={tracker.editing} onFinishedEditing={() => editExpense()} 
                 onCancel={() => cancelEditingExpense()} onNameChange={changeNameEditChange} onAmountChange={changeAmountEditChange} 
                 onDateChange={changeEditDate} onCategoryChange={changeCategoryEditInput} nameInput={tracker.nameEditInput} amountInput={tracker.amountEditInput} 
                 dateInput={tracker.dateEditInput} categoryInput={tracker.categoryEditInput} currentCategories={Array.from(tracker.categoriesMap.keys())}/>

@@ -56,9 +56,16 @@ function ExpensesForm(props) {
                         </datalist>
                     </div>
                     
+                    {/* Using hidden attribute on HTML elements to conditionall render the different button components. This is to differentiate between regular (first) and
+                    editing forms (second) */}
                     <div className="d-grid">
-                    <input type="button" className="btn btn-light btn-outline-dark rounded-pill mt-3 mb-3" onClick={props.onClick} value="Add" />
-                    </div>          
+                        <input type="button" hidden={props.editingForm} className="btn btn-light btn-outline-dark rounded-pill mt-3 mb-3" onClick={props.onClick} value="Add" />
+                    </div>  
+
+                    <div className="d-grid">
+                        <input type="button" hidden={!props.editingForm} className="btn btn-secondary btn-outline-primary rounded-pill mt-3 mb-3 text-white" onClick={props.onFinishedEditing} value="Finish Editing" />          
+                        <input type="button" hidden={!props.editingForm} className="btn btn-light btn-outline-dark rounded-pill mt-3 mb-3" onClick={props.onCancel} value="Cancel" />   
+                    </div> 
                 </form>
             </div>
         );

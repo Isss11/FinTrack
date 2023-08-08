@@ -1,77 +1,82 @@
-# Getting Started with Create React App
+# FinTrack
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This is a full-stack expense tracker application created using primarily React and Django. It supports expense editing, expense storage in a SQLite database, and aggregation of expenses by categories using a map data structure implementation.
 
-## Back-end Set-up
+## Technologies Used
 
-Refer to: https://www.digitalocean.com/community/tutorials/build-a-to-do-application-using-django-and-react to create a virtual environment.
+- React
+- JavaScript
+- Python
+- Django
+- Bootstrap 5
+- [Create React App](https://github.com/facebook/create-react-app)
 
-pipenv shell
-python manage.py runserver
+## Images
 
-## Available Scripts
+### Page Without Expenses Added
 
-In the project directory, you can run:
+![Alt text](Images/finTrack_1.png)
 
-### `npm start`
+### Adding First Expense
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+![Alt text](Images/finTrack_2.png)
+![Alt text](Images/finTrack_3.png)
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Adding Multiple Expenses
 
-### `npm test`
+Note how expenses are also listed by category in the second image.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+![Alt text](Images/finTrack_4.png)
+![Alt text](Images/finTrack_5.png)
 
-### `npm run build`
+### Editing Expense
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+*Changing "Chris Mavinga Jersey" to "Inter Miami Shorts".*
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+![Alt text](Images/finTrack_6.png)
+![Alt text](Images/finTrack_7.png)
+![Alt text](Images/finTrack_8.png)
+![Alt text](Images/finTrack_9.png)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Deleting Expense
 
-### `npm run eject`
+"Total Amount Spent" reduces in correspondence with the deleted expenses.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+![Alt text](Images/finTrack_10.png)
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Dependencies
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+- Python
+- NodeJS
+- pip
+- pipenv
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+For more details on how to set-up the Python virtual environment, see [this website](https://www.digitalocean.com/community/tutorials/build-a-to-do-application-using-django-and-react#step-1-setting-up-the-backend). I referenced it to create the Django back-end.
 
-## Learn More
+## How to Run
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+First start up the back-end, then start up the front-end and run the two parts of the application *simulataneously*.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Back-end Set-up
 
-### Code Splitting
+1. From the root directory, move into the `backend` folder.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+> `cd backend`
 
-### Analyzing the Bundle Size
+2. Activate the back-end environment.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+> `pipenv shell`
 
-### Making a Progressive Web App
+3. Run the Django back-end.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+> `python manage.py runserver`
 
-### Advanced Configuration
+### Front-end Set-up
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+1. From the root directory, move into `frontend` folder.
 
-### Deployment
+> `cd frontend`
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+2. Run the React front-end.
 
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+> `npm start`

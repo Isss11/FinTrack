@@ -5,7 +5,7 @@ function TotalExpenses(props) {
     return (
             <div>
                 <h3 className='container bg-light'>
-                    <div><strong>Total Expenses:</strong> $ {(Math.round(parseFloat(props.allExpenses) * 100) / 100).toFixed(2)}</div>
+                    <div><strong>Total Amount Spent:</strong> $ {(Math.round(parseFloat(props.allExpenses) * 100) / 100).toFixed(2)}</div>
                 </h3>
             </div>
         )

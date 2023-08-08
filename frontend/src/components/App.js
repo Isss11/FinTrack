@@ -153,7 +153,7 @@ function App(props) {
 
         // loading up edit input boxes with existing values of object that we're editing
         setTracker(previousState => {return {...previousState, nameEditInput: expenseInfo.name}});
-        setTracker(previousState => {return {...previousState, amountEditInput: expenseInfo.amount}});
+        setTracker(previousState => {return {...previousState, amountEditInput: (Math.round(parseFloat(expenseInfo.amount) * 100) / 100).toFixed(2)}});
         setTracker(previousState => {return {...previousState, dateEditInput: expenseInfo.date}});
         setTracker(previousState => {return {...previousState, categoryEditInput: expenseInfo.category}});
     }
@@ -201,7 +201,7 @@ function App(props) {
     // renders application
     return  (
             <div className="container">
-                <h1>Expense Tracker</h1>
+                <h1 className="display-2">Expense Tracker</h1>
 
                 {/* Regular Expense Form */}
                 <ExpensesForm editingForm={false} isVisible={!tracker.editing} onClick={() => addExpense()} onNameChange={changeNameChange} 
